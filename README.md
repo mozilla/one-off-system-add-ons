@@ -3,6 +3,8 @@ One off system add-ons ship fixes and updates to users of releases already shipp
 
 For a complete overview of all parts of the system add-on process (QA, relman, etc), please visit the Wiki at: https://wiki.mozilla.org/Firefox/Go_Faster/System_Add-ons/Process.
 
+Some [original documentation](https://pad.mocotoolsprod.net/gofaster_oneoffaddons).
+
 ---
 
 ## What is this repository?
