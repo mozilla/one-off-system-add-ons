@@ -13,6 +13,10 @@ This repository should be used as a resource for developers to quickly develop a
 
 These are things that are primarily fixes and updates we would like to deploy to users of releases that are already shipped. Some good examples would be pref flips. These are not new features (Hello, SHIELD, etc).
 
+## Where can I find more system add-ons?
+
+Look here: https://wiki.mozilla.org/Firefox/Go_Faster/System_Add-ons/Process#Where_can_I_find_existing_examples_of_system_add-ons.3F
+
 ## Todo
 
 * history of the things we launched - with bugs.
