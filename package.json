@@ -1,0 +1,27 @@
+{
+  "name": "one-off-system-add-ons",
+  "version": "0.0.1",
+  "description": "Repository for one-off Firefox system add-ons.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mozilla/one-off-system-add-ons.git"
+  },
+  "bugs": {
+    "url": "https://bugzilla.mozilla.org"
+  },
+  "engines": {
+    "firefox": ">=48.0a1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "3.9.1",
+    "eslint-plugin-json": "1.2.0",
+    "eslint-plugin-mozilla": "0.2.3",
+    "eslint-plugin-promise": "3.3.1"
+  },
+  "scripts": {
+    "lint": "eslint --ext=.js,.json .",
+    "test": "npm run lint"
+  },
+  "license": "MPL-2.0"
+}

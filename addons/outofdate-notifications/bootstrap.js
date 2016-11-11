@@ -3,69 +3,59 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+/* exported install, uninstall, startup, shutdown */
+/* eslint no-implicit-globals: "off" */
+
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 
 Cu.import("resource://gre/modules/Preferences.jsm");
-Cu.import('resource://gre/modules/TelemetryController.jsm');
+Cu.import("resource://gre/modules/TelemetryController.jsm");
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 XPCOMUtils.defineLazyModuleGetter(this, "Services",
                                   "resource://gre/modules/Services.jsm");
-XPCOMUtils.defineLazyGetter(this, "gStringBundle", function() {
-  return Services.strings.createBundle("chrome://outofdate-notifications/" +
-                                       "locale/" +
-                                       "outofdate-notifications.properties");
-});
+XPCOMUtils.defineLazyGetter(this, "gStringBundle", () =>
+  Services.strings.createBundle("chrome://outofdate-notifications/" +
+                                "locale/" +
+                                "outofdate-notifications.properties")
+);
 
-const PREF_UPDATE_URL         = "app.update.url.manual";
+const PREF_UPDATE_URL = "app.update.url.manual";
 const PREF_UPDATE_DEFAULT_URL = "https://www.mozilla.org/firefox";
-const KNOWN_DISTROS = ["1und1",
-                       "acer",
-                       "aol",
-                       "bing",
-                       "gmx",
-                       "mail.com",
-                       "toshiba",
-                       "webde",
-                       "yandex",
-                       "yahoo"];
+const KNOWN_DISTROS = [
+  "1und1",
+  "acer",
+  "aol",
+  "bing",
+  "gmx",
+  "mail.com",
+  "toshiba",
+  "webde",
+  "yandex",
+  "yahoo"
+];
 
-let gPingTypes = [{ payload: { event: "started" }, sent: false },
-                  { payload: { event: "shown"   }, sent: false },
-                  { payload: { event: "clicked" }, sent: false }];
+let gPingTypes = [
+  {
+    payload: {event: "started"},
+    sent: false
+  },
+  {
+    payload: {event: "shown"},
+    sent: false
+  },
+  {
+    payload: {event: "clicked"},
+    sent: false
+  }];
 let gIsPartnerRepack = false;
 
 function sendPing(aPingIndex) {
   if (!gPingTypes[aPingIndex].sent) {
     TelemetryController.submitExternalPing(
       "outofdate-notifications-system-addon", gPingTypes[aPingIndex].payload,
-      { addClientId: true });
+      {addClientId: true});
     gPingTypes[aPingIndex].sent = true;
   }
-}
-
-function startup() {
-  // Don't run this addon for partner repacks.
-  let defaultPrefs = new Preferences({ defaultBranch: true });
-  let distroId = defaultPrefs.get("distribution.id", "not-repack");
-
-  for (let d of KNOWN_DISTROS) {
-    if (d === distroId.substring(0, d.length)) {
-      gIsPartnerRepack = true;
-      return;
-    }
-  }
-
-  let wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-             .getService(Ci.nsIWindowMediator);
-
-  // Load into any existing windows
-  let browserWindow = wm.getMostRecentWindow("navigator:browser");
-  loadIntoWindow(browserWindow);
-
-  // Load into any new windows
-  wm.addListener(windowListener);
-
-  sendPing(0);
 }
 
 function showDoorhanger(aWindow) {
@@ -75,15 +65,15 @@ function showDoorhanger(aWindow) {
   let message = gStringBundle.GetStringFromName("message");
   let buttons = [
     {
-      label:       gStringBundle.GetStringFromName("buttonlabel"),
-      accessKey:   gStringBundle.GetStringFromName("buttonaccesskey"),
-      callback: function () {
+      label: gStringBundle.GetStringFromName("buttonlabel"),
+      accessKey: gStringBundle.GetStringFromName("buttonaccesskey"),
+      callback() {
         sendPing(2);
 
         let url = Preferences.get(PREF_UPDATE_URL, PREF_UPDATE_DEFAULT_URL);
         aWindow.openUILinkIn(url, "tab");
       }
-    },
+    }
   ];
   let box =
     aWindow.document.getElementById("high-priority-global-notificationbox");
@@ -123,20 +113,45 @@ function unloadFromWindow(aWindow) {
   box.removeNotification(notification);
 }
 
-var windowListener = {
-  onOpenWindow: function(aWindow) {
+let windowListener = {
+  onOpenWindow(aWindow) {
     // Wait for the window to finish loading
     let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor)
                            .getInterface(Ci.nsIDOMWindow);
-    domWindow.addEventListener("load", function() {
-      domWindow.removeEventListener("load", arguments.callee, false);
+    domWindow.addEventListener("load", function loadListener() {
+      domWindow.removeEventListener("load", loadListener, false);
       loadIntoWindow(domWindow);
     }, false);
   },
 
-  onCloseWindow: function(aWindow) {},
-  onWindowTitleChange: function(aWindow, aTitle) {}
+  onCloseWindow(aWindow) {},
+  onWindowTitleChange(aWindow, aTitle) {}
 };
+
+function startup() {
+  // Don't run this addon for partner repacks.
+  let defaultPrefs = new Preferences({defaultBranch: true});
+  let distroId = defaultPrefs.get("distribution.id", "not-repack");
+
+  for (let d of KNOWN_DISTROS) {
+    if (d === distroId.substring(0, d.length)) {
+      gIsPartnerRepack = true;
+      return;
+    }
+  }
+
+  let wm = Cc["@mozilla.org/appshell/window-mediator;1"]
+             .getService(Ci.nsIWindowMediator);
+
+  // Load into any existing windows
+  let browserWindow = wm.getMostRecentWindow("navigator:browser");
+  loadIntoWindow(browserWindow);
+
+  // Load into any new windows
+  wm.addListener(windowListener);
+
+  sendPing(0);
+}
 
 function shutdown(aData, aReason) {
   // When the application is shutting down we normally don't have to clean
