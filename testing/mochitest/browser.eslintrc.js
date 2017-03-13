@@ -1,4 +1,6 @@
 // Parent config file for all browser-chrome files.
+/* eslint-env node */
+
 module.exports = {
   "rules": {
     "mozilla/import-headjs-globals": "warn",
@@ -8,6 +10,7 @@ module.exports = {
   "env": {
     "browser": true,
     "mozilla/browser-window": true,
+    "mozilla/places-overlay": true,
     "mozilla/simpletest": true,
     "node": true
   },

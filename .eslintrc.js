@@ -125,7 +125,7 @@ module.exports = {
     "no-floating-decimal": "error",
     "no-func-assign": "error",
     "no-implicit-coercion": ["error", {"allow": ["!!"]}],
-    "no-implicit-globals": "error",
+    "no-implicit-globals": "off",
     "no-implied-eval": "error",
     "no-inline-comments": "off",
     "no-inner-declarations": "error",
@@ -207,7 +207,7 @@ module.exports = {
     "no-unused-labels": "error",
     "no-unused-vars": ["error", {
       "vars": "all",
-      "varsIgnorePattern": "^Cc|Ci|Cu|Cr|EXPORTED_SYMBOLS",
+      "varsIgnorePattern": "^Cc|Ci|Cu|Cr|EXPORTED_SYMBOLS|startup|shutdown|install|uninstall",
       "args": "none"
     }],
     "no-use-before-define": "error",

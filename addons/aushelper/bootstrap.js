@@ -35,16 +35,18 @@ const observer = {
       case "prefservice:after-app-defaults":
         TelemetryLog.log("WEBSENSE_DEFAULT_PREFS_RESET");
         break;
-      case "nsPref:changed":
+      case "nsPref:changed": {
         let branch = Services.prefs.getDefaultBranch("");
         let prefValue = branch.getCharPref(APP_UPDATE_URL_PREF);
         TelemetryLog.log("WEBSENSE_PREF_CHANGED", [prefValue]);
         break;
+      }
     }
   }
 };
 
-function startup() {
+/* eslint max-depth:off */
+function startup() { // eslint-disable-line complexity, max-statements
   if (Services.appinfo.OS != "WINNT") {
     return;
   }
@@ -110,7 +112,7 @@ function startup() {
             hexVal.unshift(c);
           }
           cpuRevMatch = false;
-          if (microCodeVersions.indexOf(parseInt(hexVal.join(""))) != -1) {
+          if (microCodeVersions.indexOf(parseInt(hexVal.join(""), 16)) != -1) {
             cpuRevMatch = true;
           }
           break;

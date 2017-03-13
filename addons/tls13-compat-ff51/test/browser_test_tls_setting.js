@@ -2,10 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", {});
-const {TelemetryArchive} = Cu.import("resource://gre/modules/TelemetryArchive.jsm", {});
+/* global AddonManager */
 
 "use strict";
+
+const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", {});
+const {TelemetryArchive} = Cu.import("resource://gre/modules/TelemetryArchive.jsm", {});
 
 // The Firefox TLS setting. 3 is TLS 1.2, 4 is TLS 1.3
 const VERSION_MAX_PREF = "security.tls.version.max";

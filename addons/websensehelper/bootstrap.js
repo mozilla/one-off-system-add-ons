@@ -10,6 +10,8 @@
 // matching. Instead of REPLACE_KEY + "/", we match on a regex which accounts for
 // the possibility that the Bug1296630 replacement has already run.
 
+const PREF_DEFAULTS_RESET_TOPIC = "prefservice:after-app-defaults";
+
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 
 const APP_UPDATE_URL_PREF = "app.update.url";
@@ -25,11 +27,12 @@ const observer = {
       case "prefservice:after-app-defaults":
         TelemetryLog.log("WEBSENSE_DEFAULT_PREFS_RESET");
         break;
-      case "nsPref:changed":
+      case "nsPref:changed": {
         let branch = Services.prefs.getDefaultBranch("");
         let prefValue = branch.getCharPref(APP_UPDATE_URL_PREF);
         TelemetryLog.log("WEBSENSE_PREF_CHANGED", [prefValue]);
         break;
+      }
     }
   }
 };

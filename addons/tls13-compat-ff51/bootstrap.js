@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "use strict";
 
-let {classes: Cc, interfaces: Ci, utils: Cu} = Components;
+let {classes: Cc, interfaces: Ci, utils: Cu, results: Cr} = Components;
 
 Cu.import("resource://gre/modules/Preferences.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
@@ -34,7 +34,7 @@ let gTimer;
 
 function debug(msg) {
   if (DEBUG) {
-    console.log(`TLSEXP: ${msg}`);
+    console.log(`TLSEXP: ${msg}`); // eslint-disable-line no-console
   }
 }
 
@@ -97,7 +97,7 @@ function makeRequest(prefs, index, url, body) {
       debug("Finished with error");
       let channel = e.target.channel;
       let nsireq = channel.QueryInterface(Ci.nsIRequest);
-      result.error = nsireq ? nsireq.status : NS_ERROR_NOT_AVAILABLE;
+      result.error = nsireq ? nsireq.status : Cr.NS_ERROR_NOT_AVAILABLE;
       recordSecInfo(channel, result);
       result.elapsed = Date.now() - t0;
       debug("Re-setting pref");
@@ -146,7 +146,7 @@ function report(status, result) {
 // Inefficient shuffle algorithm, but n <= 10
 function shuffleArray(orig) {
   let inarr = [];
-  for (let i in orig) {
+  for (let i of orig) {
     inarr.push(orig[i]);
   }
   let out = [];
@@ -171,7 +171,7 @@ function install() { // eslint-disable-line no-unused-vars
   // setting.
   let userprefs = new Preferences();
   if (userprefs.isSet(VERSION_MAX_PREF)) {
-    console.log("User has changed TLS max version. Skipping");
+    debug("User has changed TLS max version. Skipping");
     return;
   }
 
@@ -193,15 +193,15 @@ function install() { // eslint-disable-line no-unused-vars
   let shuffled = shuffleArray(Object.keys(URLs));
   let results = [];
 
-  Task.spawn(function*() {
-    for (let i in shuffled) {
+  Task.spawn(function*() { // eslint-disable-line promise/catch-or-return
+    for (let i of shuffled) {
       results.push(yield makeRequest(gPrefs, i, shuffled[i], null));
     }
 
     report("report", results);
   })
     .catch(e => Cu.reportError(e))
-    .then(_ => {
+    .then(_ => { // eslint-disable-line promise/always-return
       // Make sure we re-set to TLS 1.2.
       setTlsPref(gPrefs, 3);
 
