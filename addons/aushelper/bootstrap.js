@@ -55,7 +55,7 @@ function startup() {
     wrk = Cc["@mozilla.org/windows-registry-key;1"].createInstance(Ci.nsIWindowsRegKey);
     wrk.open(wrk.ROOT_KEY_LOCAL_MACHINE, regCPUPath, wrk.ACCESS_READ);
   } catch (e) {
-    Cu.reportError("AUSHelper - unable to open registry. Exception: " + e);
+    Cu.reportError(`AUSHelper - unable to open registry. Exception: ${e}`);
     TelemetryLog.log("AUSHELPER_FATAL_ERROR", [e]);
   }
 
@@ -74,7 +74,7 @@ function startup() {
       cpuVendorIDMatch = true;
     }
   } catch (e) {
-    Cu.reportError("AUSHelper - error getting CPU vendor indentifier. Exception: " + e);
+    Cu.reportError(`AUSHelper - error getting CPU vendor indentifier. Exception: ${e}`);
     TelemetryLog.log("AUSHELPER_CPU_VENDOR_ID_ERROR", [e]);
     cpuVendorIDMatch = null;
   }
@@ -86,7 +86,7 @@ function startup() {
       cpuIDMatch = true;
     }
   } catch (e) {
-    Cu.reportError("AUSHelper - error getting CPU indentifier. Exception: " + e);
+    Cu.reportError(`AUSHelper - error getting CPU indentifier. Exception: ${e}`);
     TelemetryLog.log("AUSHELPER_CPU_ID_ERROR", [e]);
     cpuIDMatch = null;
   }
@@ -105,7 +105,7 @@ function startup() {
           for (let j = 4; j < 8; j++) {
             let c = regVal.charCodeAt(j).toString(16);
             if (c.length == 1) {
-              c = "0" + c;
+              c = `0${c}`;
             }
             hexVal.unshift(c);
           }
@@ -125,7 +125,7 @@ function startup() {
     }
     wrk.close();
   } catch (ex) {
-    Cu.reportError("AUSHelper - error getting CPU revision. Exception: " + ex);
+    Cu.reportError(`AUSHelper - error getting CPU revision. Exception: ${ex}`);
     TelemetryLog.log("AUSHELPER_CPU_REV_ERROR", [ex]);
     cpuRevMatch = null;
   }
@@ -166,22 +166,22 @@ function startup() {
         }
         wrk.close();
       } catch (e) {
-        Cu.reportError("AUSHelper - unable to read registry. Exception: " + e);
+        Cu.reportError(`AUSHelper - unable to read registry. Exception: ${e}`);
         TelemetryLog.log("WEBSENSE_REG_READ_ERROR", [e]);
       }
     }
   } catch (ex) {
-    Cu.reportError("AUSHelper - unable to open registry. Exception: " + ex);
+    Cu.reportError(`AUSHelper - unable to open registry. Exception: ${ex}`);
     TelemetryLog.log("WEBSENSE_REG_OPEN_ERROR", [ex]);
   }
 
-  let websenseValue = "(" + (websenseVersion ? "websense-" + websenseVersion : "nowebsense") + ")";
+  let websenseValue = `(${websenseVersion ? `websense-${websenseVersion}` : "nowebsense"})`;
 
   let branch = Services.prefs.getDefaultBranch("");
   let curValue = branch.getCharPref(APP_UPDATE_URL_PREF);
 
   if (REPLACE_KEY_REGEX.test(curValue)) {
-    let newValue = curValue.replace(REPLACE_KEY_REGEX, REPLACE_KEY + cpuValue + websenseValue + "/");
+    let newValue = curValue.replace(REPLACE_KEY_REGEX, `${REPLACE_KEY + cpuValue + websenseValue}/`);
     branch.setCharPref(APP_UPDATE_URL_PREF, newValue);
     TelemetryLog.log("WEBSENSE_MODIFIED", [newValue]);
   } else {

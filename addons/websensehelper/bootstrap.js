@@ -54,22 +54,22 @@ function startup() {
         }
         wrk.close();
       } catch (e) {
-        Cu.reportError("WebsenseHelper - unable to read registry. Exception: " + e);
+        Cu.reportError(`WebsenseHelper - unable to read registry. Exception: ${e}`);
         TelemetryLog.log("WEBSENSE_REG_READ_ERROR", [e]);
       }
     }
   } catch (ex) {
-    Cu.reportError("WebsenseHelper - unable to open registry. Exception: " + ex);
+    Cu.reportError(`WebsenseHelper - unable to open registry. Exception: ${ex}`);
     TelemetryLog.log("WEBSENSE_REG_OPEN_ERROR", [ex]);
   }
 
-  let websenseValue = "(" + (websenseVersion ? "websense-" + websenseVersion : "nowebsense") + ")";
+  let websenseValue = `(${websenseVersion ? `websense-${websenseVersion}` : "nowebsense"})`;
 
   let branch = Services.prefs.getDefaultBranch("");
   let curValue = branch.getCharPref(APP_UPDATE_URL_PREF);
 
   if (REPLACE_KEY_REGEX.test(curValue)) {
-    let newValue = curValue.replace(REPLACE_KEY_REGEX, REPLACE_KEY + websenseValue + "/");
+    let newValue = curValue.replace(REPLACE_KEY_REGEX, `${REPLACE_KEY + websenseValue}/`);
     branch.setCharPref(APP_UPDATE_URL_PREF, newValue);
     TelemetryLog.log("WEBSENSE_MODIFIED", [newValue]);
   } else {

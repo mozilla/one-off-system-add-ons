@@ -10,7 +10,7 @@ Cu.import("resource://gre/modules/Preferences.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource://gre/modules/TelemetryController.jsm");
 Cu.import("resource://gre/modules/Task.jsm");
-const { setTimeout, clearTimeout } = Cu.import("resource://gre/modules/Timer.jsm", {});
+const {setTimeout, clearTimeout} = Cu.import("resource://gre/modules/Timer.jsm", {});
 
 const VERSION_MAX_PREF = "security.tls.version.max";
 
@@ -20,22 +20,22 @@ const TIMEOUT = "120000";
 // These should be different hosts so that we don't bias any performance test
 // toward 1.2.
 const URLs = {
-  "https://enabled.tls13.com/" : true,
-  "https://disabled.tls13.com/" : true,
-  "https://short.tls13.com/" : true,
-  "https://control.tls12.com/" : false
+  "https://enabled.tls13.com/": true,
+  "https://disabled.tls13.com/": true,
+  "https://short.tls13.com/": true,
+  "https://control.tls12.com/": false
 };
 
 const DEBUG = false;
 
 let gStarted = false;
-let gPrefs = new Preferences({ defaultBranch: true });
+let gPrefs = new Preferences({defaultBranch: true});
 let gTimer;
 
 function debug(msg) {
-    if (DEBUG) {
-        console.log(`TLSEXP: ${msg}`);
-    }
+  if (DEBUG) {
+    console.log(`TLSEXP: ${msg}`);
+  }
 }
 
 // These variables are unreliable for some reason.
@@ -49,7 +49,7 @@ function read(obj, field) {
 }
 
 function setTlsPref(prefs, value) {
-  debug("Setting pref to " + value);
+  debug(`Setting pref to ${value}`);
   prefs.set(VERSION_MAX_PREF, value);
 }
 
@@ -59,15 +59,15 @@ function recordSecInfo(channel, result) {
   if (secInfo instanceof Ci.nsITransportSecurityInfo) {
     secInfo.QueryInterface(Ci.nsITransportSecurityInfo);
     const isSecure = Ci.nsIWebProgressListener.STATE_IS_SECURE;
-    result.secure = !!(read(secInfo, 'securityState') & isSecure);
-    result.prError = read(secInfo, 'errorCode');
+    result.secure = !!(read(secInfo, "securityState") & isSecure);
+    result.prError = read(secInfo, "errorCode");
   }
   if (secInfo instanceof Ci.nsISSLStatusProvider) {
     let sslStatus = secInfo.QueryInterface(Ci.nsISSLStatusProvider)
         .SSLStatus.QueryInterface(Ci.nsISSLStatus);
-    let cert = read(sslStatus, 'serverCert');
-    result.certfp = read(cert, 'sha256Fingerprint');  // A hex string
-    result.version = read(sslStatus, 'protocolVersion');
+    let cert = read(sslStatus, "serverCert");
+    result.certfp = read(cert, "sha256Fingerprint");  // A hex string
+    result.version = read(sslStatus, "protocolVersion");
   }
 }
 
@@ -83,21 +83,21 @@ function makeRequest(prefs, index, url, body) {
     let t0 = Date.now();
     let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
         .createInstance(Ci.nsIXMLHttpRequest);
-      req.open(
+    req.open(
           body ? "POST" : "GET", url, true);
     req.setRequestHeader("Content-Type", "application/json");
 
-    var result = {
-      "index" : index,
-      "url" : url,
-      "start_time" : t0
+    let result = {
+      index,
+      url,
+      "start_time": t0
     };
     req.timeout = 10000; // 10s is low intentionally
     req.addEventListener("error", e => {
       debug("Finished with error");
       let channel = e.target.channel;
       let nsireq = channel.QueryInterface(Ci.nsIRequest);
-      result.error= nsireq ? nsireq.status : NS_ERROR_NOT_AVAILABLE;
+      result.error = nsireq ? nsireq.status : NS_ERROR_NOT_AVAILABLE;
       recordSecInfo(channel, result);
       result.elapsed = Date.now() - t0;
       debug("Re-setting pref");
@@ -118,7 +118,7 @@ function makeRequest(prefs, index, url, body) {
       resolve(result);
     });
 
-    debug("Starting request for " + url + " TLS 1.3=" + URLs[url]);
+    debug(`Starting request for ${url} TLS 1.3=${URLs[url]}`);
     if (body) {
       req.send(JSON.stringify(body));
     } else {
@@ -138,21 +138,21 @@ function report(status, result) {
     "tls-13-study-v4",
     {
       time: Date.now(),
-      status: status,
+      status,
       results: result
     }, {});
 }
 
 // Inefficient shuffle algorithm, but n <= 10
 function shuffleArray(orig) {
-  var inarr = [];
+  let inarr = [];
   for (let i in orig) {
     inarr.push(orig[i]);
   }
-  var out = [];
-    while (inarr.length > 0) {
-        let x = Math.floor(Math.random() * inarr.length);
-        out.push(inarr.splice(x, 1)[0])
+  let out = [];
+  while (inarr.length > 0) {
+    let x = Math.floor(Math.random() * inarr.length);
+    out.push(inarr.splice(x, 1)[0]);
   }
   return out;
 }
@@ -193,13 +193,12 @@ function install() { // eslint-disable-line no-unused-vars
   let shuffled = shuffleArray(Object.keys(URLs));
   let results = [];
 
-  Task.spawn(function* () {
-    for (var i in shuffled) {
+  Task.spawn(function*() {
+    for (let i in shuffled) {
       results.push(yield makeRequest(gPrefs, i, shuffled[i], null));
     }
 
     report("report", results);
-
   })
     .catch(e => Cu.reportError(e))
     .then(_ => {
