@@ -22,7 +22,7 @@ function debug(msg) {
 }
 
 async function getRandomnessSeed() {
-  return await ClientID.getClientID();
+  return ClientID.getClientID();
 }
 
 function toHex(arr) {
@@ -58,7 +58,7 @@ async function startup(data, reason) {
 
   debug("Installing");
 
-  let variate = await generateVariate(getRandomnessSeed(), data.id);
+  let variate = await generateVariate(await getRandomnessSeed(), data.id);
   debug(variate);
   let prefs = new Preferences({ defaultBranch: true });
 
