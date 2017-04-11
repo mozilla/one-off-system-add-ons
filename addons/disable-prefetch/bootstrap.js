@@ -10,7 +10,6 @@ const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 
 const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", this);
 
-
 function install() {}
 
 function uninstall() {}
