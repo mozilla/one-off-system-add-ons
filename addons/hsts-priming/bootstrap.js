@@ -8,7 +8,7 @@
 
 const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 
-const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", this);
+const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", {});
 
 const PREF_SEND_HSTS_PRIMING = "security.mixed_content.send_hsts_priming";
 

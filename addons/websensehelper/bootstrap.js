@@ -79,8 +79,8 @@ function startup() {
     TelemetryLog.log("WEBSENSE_ALREADY_MODIFIED", [curValue]);
   }
 
-  Services.obs.addObserver(observer, PREF_DEFAULTS_RESET_TOPIC, false);
-  Services.prefs.addObserver(APP_UPDATE_URL_PREF, observer, false);
+  Services.obs.addObserver(observer, PREF_DEFAULTS_RESET_TOPIC);
+  Services.prefs.addObserver(APP_UPDATE_URL_PREF, observer);
 }
 
 function shutdown() {

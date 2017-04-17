@@ -119,9 +119,8 @@ let windowListener = {
     let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor)
                            .getInterface(Ci.nsIDOMWindow);
     domWindow.addEventListener("load", function loadListener() {
-      domWindow.removeEventListener("load", loadListener, false);
       loadIntoWindow(domWindow);
-    }, false);
+    }, {once: true});
   },
 
   onCloseWindow(aWindow) {},
