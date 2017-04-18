@@ -9,7 +9,7 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>hsts-priming@mozilla.org</em:id>
+    <em:id>enable-screenshots@mozilla.org</em:id>
     <em:version>1.0</em:version>
     <em:type>2</em:type>
     <em:bootstrap>true</em:bootstrap>
@@ -26,7 +26,7 @@
     </em:targetApplication>
 
     <!-- Front End MetaData -->
-    <em:name>Send HSTS Priming Requests</em:name>
-    <em:description>Disables sending HSTS priming requests by default in Release.</em:description>
+    <em:name>Enable Firefox Screenshots</em:name>
+    <em:description>This enables Firefox Screenshots.</em:description>
   </Description>
 </RDF>
