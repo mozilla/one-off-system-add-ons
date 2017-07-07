@@ -64,9 +64,9 @@ function recordSecInfo(channel, result) {
   }
   if (secInfo instanceof Ci.nsISSLStatusProvider) {
     let sslStatus = secInfo.QueryInterface(Ci.nsISSLStatusProvider)
-        .SSLStatus.QueryInterface(Ci.nsISSLStatus);
+      .SSLStatus.QueryInterface(Ci.nsISSLStatus);
     let cert = read(sslStatus, "serverCert");
-    result.certfp = read(cert, "sha256Fingerprint");  // A hex string
+    result.certfp = read(cert, "sha256Fingerprint"); // A hex string
     result.version = read(sslStatus, "protocolVersion");
   }
 }
@@ -82,9 +82,9 @@ function makeRequest(prefs, index, url, body) {
 
     let t0 = Date.now();
     let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-        .createInstance(Ci.nsIXMLHttpRequest);
+      .createInstance(Ci.nsIXMLHttpRequest);
     req.open(
-          body ? "POST" : "GET", url, true);
+      body ? "POST" : "GET", url, true);
     req.setRequestHeader("Content-Type", "application/json");
 
     let result = {

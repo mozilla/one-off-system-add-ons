@@ -12,7 +12,7 @@ Cu.import("resource://gre/modules/Preferences.jsm");
 Cu.import("resource://gre/modules/TelemetryController.jsm");
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 XPCOMUtils.defineLazyModuleGetter(this, "Services",
-                                  "resource://gre/modules/Services.jsm");
+  "resource://gre/modules/Services.jsm");
 XPCOMUtils.defineLazyGetter(this, "gStringBundle", () =>
   Services.strings.createBundle("chrome://outofdate-notifications/" +
                                 "locale/" +
@@ -81,8 +81,8 @@ function showDoorhanger(aWindow) {
     return;
   }
   let notification = box.appendNotification(message, "outofdate-notifications",
-                                         "", box.PRIORITY_WARNING_MEDIUM,
-                                         buttons);
+    "", box.PRIORITY_WARNING_MEDIUM,
+    buttons);
   let closeButton = aWindow.document.getAnonymousElementByAttribute(
     notification, "class", "messageCloseButton close-icon tabbable");
   closeButton.hidden = true;
@@ -117,7 +117,7 @@ let windowListener = {
   onOpenWindow(aWindow) {
     // Wait for the window to finish loading
     let domWindow = aWindow.QueryInterface(Ci.nsIInterfaceRequestor)
-                           .getInterface(Ci.nsIDOMWindow);
+      .getInterface(Ci.nsIDOMWindow);
     domWindow.addEventListener("load", function loadListener() {
       loadIntoWindow(domWindow);
     }, {once: true});
@@ -140,7 +140,7 @@ function startup() {
   }
 
   let wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-             .getService(Ci.nsIWindowMediator);
+    .getService(Ci.nsIWindowMediator);
 
   // Load into any existing windows
   let browserWindow = wm.getMostRecentWindow("navigator:browser");
