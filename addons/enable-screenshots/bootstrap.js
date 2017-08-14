@@ -6,19 +6,14 @@
 /* exported install, uninstall, startup, shutdown */
 /* eslint no-implicit-globals: "off" */
 
-const {classes: Cc, interfaces: Ci, utils: Cu} = Components;
-
-const {Preferences} = Cu.import("resource://gre/modules/Preferences.jsm", {});
-
-const PREF_SEND_SCREENSHOTS_DISABLED = "extensions.screenshots.system-disabled";
+Components.utils.import("resource://gre/modules/Services.jsm");
 
 function install() {}
 
 function uninstall() {}
 
 function startup() {
-  let defaults = new Preferences({defaultBranch: true});
-  defaults.set(PREF_SEND_SCREENSHOTS_DISABLED, false);
+  Services.prefs.setBoolPref("extensions.screenshots.system-disabled", false);
 }
 
 function shutdown(data, reason) {}
