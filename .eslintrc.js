@@ -4,10 +4,7 @@
 
 module.exports = {
   // When adding items to this file please check for effects on sub-directories.
-  "parserOptions": {
-    "ecmaFeatures": {"jsx": true},
-    "ecmaVersion": 8
-  },
+  "parserOptions": {"ecmaVersion": 8},
   "env": {
     "browser": true,
     "es6": true,
