@@ -15,7 +15,7 @@ tasks:
     workerType: "{{ taskcluster.docker.workerType }}"
     payload:
       maxRunTime: 1200
-      image: "standard8/one-off-system-add-ons.2017030801.800ba54a4bd5"
+      image: "standard8/one-off-system-add-ons:2017081801.a6a1f5c1d971"
       command:
         - "/bin/bash"
         - "-lc"
