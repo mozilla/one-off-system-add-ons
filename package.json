@@ -18,7 +18,7 @@
     "eslint-plugin-json": "1.2.0",
     "eslint-plugin-mozilla": "0.4.4",
     "eslint-plugin-no-unsanitized": "2.0.1",
-    "eslint-plugin-promise": "3.5.0"
+    "eslint-plugin-promise": "3.6.0"
   },
   "scripts": {
     "lint": "eslint --ext=.js,.json .",
