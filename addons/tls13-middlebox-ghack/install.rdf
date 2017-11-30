@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>tls13-middlebox-ghack@mozilla.org</em:id>
+    <em:version>1.0.0</em:version>
+    <em:type>2</em:type>
+    <em:bootstrap>true</em:bootstrap>
+    <em:unpack>false</em:unpack>
+    <em:multiprocessCompatible>true</em:multiprocessCompatible>
+
+    <!-- Fennec -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{aa3c5121-dab2-40e2-81ca-7ea25febc110}</em:id>
+        <em:minVersion>58.0*</em:minVersion>
+        <em:maxVersion>60</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>58.0*</em:minVersion>
+        <em:maxVersion>60</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Front End MetaData -->
+    <em:name>TLS 1.3 Compatibility Testing of Middleboxes</em:name>
+    <em:description>TLS 1.3 Compatibility Testing of Middleboxes</em:description>
+    <em:aboutURL>https://bugzilla.mozilla.org/show_bug.cgi?id=1414694</em:aboutURL>
+  </Description>
+</RDF>
