@@ -17,7 +17,7 @@
     "eslint": "4.12.1",
     "eslint-plugin-json": "1.2.0",
     "eslint-plugin-mozilla": "0.4.9",
-    "eslint-plugin-no-unsanitized": "2.0.1",
+    "eslint-plugin-no-unsanitized": "2.0.2",
     "eslint-plugin-promise": "3.6.0"
   },
   "scripts": {
