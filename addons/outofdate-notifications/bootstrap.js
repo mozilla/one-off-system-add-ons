@@ -139,15 +139,12 @@ function startup() {
     }
   }
 
-  let wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-    .getService(Ci.nsIWindowMediator);
-
   // Load into any existing windows
-  let browserWindow = wm.getMostRecentWindow("navigator:browser");
+  let browserWindow = Services.wm.getMostRecentWindow("navigator:browser");
   loadIntoWindow(browserWindow);
 
   // Load into any new windows
-  wm.addListener(windowListener);
+  Services.wm.addListener(windowListener);
 
   sendPing(0);
 }
