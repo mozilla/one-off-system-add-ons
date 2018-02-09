@@ -84,6 +84,7 @@ function startup() { // eslint-disable-line complexity, max-statements
   let cpuIDMatch = false;
   try {
     let cpuID = wrk.readStringValue("Identifier");
+    // eslint-disable-next-line mozilla/use-includes-instead-of-indexOf
     if (cpuID.toLowerCase().indexOf("family 6 model 61 stepping 4") != -1) {
       cpuIDMatch = true;
     }
@@ -112,6 +113,7 @@ function startup() { // eslint-disable-line complexity, max-statements
             hexVal.unshift(c);
           }
           cpuRevMatch = false;
+          // eslint-disable-next-line mozilla/use-includes-instead-of-indexOf
           if (microCodeVersions.indexOf(parseInt(hexVal.join(""), 16)) != -1) {
             cpuRevMatch = true;
           }

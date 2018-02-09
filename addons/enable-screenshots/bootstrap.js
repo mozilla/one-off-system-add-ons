@@ -6,6 +6,7 @@
 /* exported install, uninstall, startup, shutdown */
 /* eslint no-implicit-globals: "off" */
 
+// eslint-disable-next-line mozilla/use-cc-etc
 Components.utils.import("resource://gre/modules/Services.jsm");
 
 function install() {}
