@@ -43,7 +43,7 @@ async function startup(data, reason) {
 
   let variate = await generateVariate(ClientID.getClientID(), data.id);
   debug(variate);
-  let prefs = Services.prefs.getDefaultBranch("")
+  let prefs = Services.prefs.getDefaultBranch("");
 
   if (variate < ENABLE_PROB) {
     debug("Setting TLS 1.3 on");
