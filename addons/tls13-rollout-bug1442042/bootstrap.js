@@ -16,7 +16,7 @@ Cu.importGlobalProperties(["crypto", "TextEncoder"]);
 // depending on server-side throttling, as throttling cannot account for any
 // other concurrent gradual roll-outs.
 const ENABLE_PROB = 0.1;
-const DEBUG = false;
+const DEBUG = true;
 const VERSION_MAX_PREF = "security.tls.version.max";
 
 function debug(msg) {
@@ -42,7 +42,7 @@ async function startup(data, reason) {
 
   debug("Installing");
 
-  let variate = await generateVariate(ClientID.getClientID(), data.id);
+  let variate = await generateVariate(await ClientID.getClientID(), data.id);
   debug(variate);
   let prefs = Services.prefs.getDefaultBranch("");
 
