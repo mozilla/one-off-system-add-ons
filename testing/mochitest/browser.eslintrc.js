@@ -10,7 +10,6 @@ module.exports = {
   "env": {
     "browser": true,
     "mozilla/browser-window": true,
-    "mozilla/places-overlay": true,
     "mozilla/simpletest": true,
     "node": true
   },

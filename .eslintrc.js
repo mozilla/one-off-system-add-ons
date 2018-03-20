@@ -38,9 +38,13 @@ module.exports = {
       "addons/tls13-middlebox-draft22/**",
       "addons/tls13-middlebox-ghack/**",
       "addons/tls13-middlebox-serverhello/**",
+      "addons/tls13-rollout-bug1442042/bootstrap.js",
       "addons/websensehelper/**"
     ],
-    "rules": {"mozilla/use-chromeutils-import": "off"}
+    "rules": {
+      "mozilla/use-chromeutils-import": "off",
+      "mozilla/no-define-cc-etc": "off"
+    }
   }],
   "rules": {
     "mozilla/import-globals": "warn",
