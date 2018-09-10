@@ -9,12 +9,20 @@
 
 ChromeUtils.import("resource://gre/modules/Services.jsm");
 ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
+ChromeUtils.import("resource://gre/modules/XPCOMUtils.jsm");
 
 const A11Y_INIT_OR_SHUTDOWN = "a11y-init-or-shutdown";
 
 const PREF_BROWSER_TABS_REMOTE_FORCE_DISABLE = "browser.tabs.remote.force-disable";
 
 const CONFIRM_RESTART_PROMPT_RESTART_NOW = 0;
+
+XPCOMUtils.defineLazyGetter(this, "jawsesrStrings", () =>
+  Services.strings.createBundle("chrome://jaws-esr/locale/jaws-esr.properties"));
+XPCOMUtils.defineLazyGetter(this, "brandBundle", () =>
+  Services.strings.createBundle("chrome://branding/locale/brand.properties"));
+XPCOMUtils.defineLazyGetter(this, "updates", () =>
+  Services.strings.createBundle("chrome://mozapps/locale/update/updates.properties"));
 
 const observer = {
   observe(subject, topic, data) {
@@ -44,19 +52,19 @@ async function checkVersionPromptAndDisableE10S() {
 
   removeA11yInitOrShutdownObserver();
 
-  const title = "Restart Firefox";
-  const msg = "Accessibility support is partially disabled due to compatibility " +
-              "issues with new Firefox features. Please restart Firefox to disable " +
-              "features conflicting with accessibility support.";
-  const restartButtonText = "Restart Firefox now";
+  const brandShortName = brandBundle.GetStringFromName("brandShortName");
+  const restartFirefoxText = updates.formatStringFromName("restartNowButton",
+    [brandShortName], 1);
+  const msg = jawsesrStrings.formatStringFromName("jawsesr.dialog.msg",
+    [brandShortName, brandShortName], 2);
 
   let buttonFlags = (Services.prompt.BUTTON_POS_0 *
                      Services.prompt.BUTTON_TITLE_IS_STRING);
   buttonFlags += (Services.prompt.BUTTON_POS_1 * Services.prompt.BUTTON_TITLE_CANCEL);
   buttonFlags += Services.prompt.BUTTON_POS_0_DEFAULT;
 
-  const buttonIndex = Services.prompt.confirmEx(null, title, msg, buttonFlags,
-    restartButtonText, null, null, null, {});
+  const buttonIndex = Services.prompt.confirmEx(null, restartFirefoxText, msg,
+    buttonFlags, restartFirefoxText, null, null, null, {});
 
   if (buttonIndex === CONFIRM_RESTART_PROMPT_RESTART_NOW) {
     Services.prefs.setBoolPref(PREF_BROWSER_TABS_REMOTE_FORCE_DISABLE, true);
