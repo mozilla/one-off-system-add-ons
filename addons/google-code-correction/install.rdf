@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>google-code-correction@mozilla.org</em:id>
+    <em:version>0.9</em:version>
+    <em:type>2</em:type>
+    <em:bootstrap>true</em:bootstrap>
+    <em:unpack>false</em:unpack>
+    <em:multiprocessCompatible>true</em:multiprocessCompatible>
+
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>43</em:minVersion>
+        <em:maxVersion>59.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Front End MetaData -->
+    <em:name>Google Code Correction</em:name>
+    <em:aboutURL>https://bugzilla.mozilla.org/show_bug.cgi?id=1454443</em:aboutURL>
+  </Description>
+</RDF>
