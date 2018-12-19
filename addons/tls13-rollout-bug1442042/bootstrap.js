@@ -10,6 +10,7 @@ let {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource://gre/modules/ClientID.jsm");
 
+// eslint-disable-next-line mozilla/reject-importGlobalProperties
 Cu.importGlobalProperties(["crypto", "TextEncoder"]);
 
 // initially roll out to 10%, we want to control this on the client rather than

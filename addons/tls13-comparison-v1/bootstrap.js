@@ -9,6 +9,7 @@ let {classes: Cc, interfaces: Ci, utils: Cu} = Components;
 Cu.import("resource://gre/modules/Preferences.jsm");
 Cu.import("resource://gre/modules/ClientID.jsm");
 
+// eslint-disable-next-line mozilla/reject-importGlobalProperties
 Cu.importGlobalProperties(["crypto", "TextEncoder"]);
 const DEBUG = false;
 const ENABLE_PROB = 0.5;
