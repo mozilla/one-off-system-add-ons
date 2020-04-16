@@ -1,30 +1,43 @@
-version: 0
-allowPullRequests: public
-metadata:
-  name: One-off System Add-ons Repo
-  description: One-off System Add-ons CI Tasks
-  owner: "{{ event.head.user.email }}"
-  source: "{{ event.head.repo.url }}"
+version: 1
+
+policy:
+  pullRequests: public
+
 tasks:
-  - provisionerId: "{{ taskcluster.docker.provisionerId }}"
-    metadata:
-      name: One-off System Add-ons Lint Tests
-      description: One-off System Add-ons Lint Tests
-      owner: "{{ event.head.user.email }}"
-      source: "{{ event.head.repo.url }}"
-    workerType: "{{ taskcluster.docker.workerType }}"
-    payload:
-      maxRunTime: 1200
-      image: "standard8/one-off-system-add-ons:2017081801.a6a1f5c1d971"
-      command:
-        - "/bin/bash"
-        - "-lc"
-        - "git clone {{event.head.repo.url}} repo && cd repo && git checkout {{event.head.repo.branch}} && npm install && npm run lint"
-    extra:
-      github:
-        env: true
-        events:
-          - pull_request.opened
-          - pull_request.synchronize
-          - pull_request.reopened
-          - push
+
+  $let:
+    head_rev:
+      $if: 'tasks_for == "github-pull-request"'
+      then: ${event.pull_request.head.sha}
+      else: ${event.after}
+
+    clone_url:
+      $if: 'tasks_for == "github-pull-request"'
+      then: ${event.pull_request.head.repo.git_url}}
+      else: ${event.repository.url}
+
+    repository:
+      $if: 'tasks_for == "github-pull-request"'
+      then: ${event.pull_request.head.repo.html_url}
+      else: ${event.repository.html_url}
+
+  in:
+    $if: 'tasks_for in ["github-pull-request", "github-push"]'
+    then:
+      - taskId: {$eval: as_slugid("One-off System Add-ons Lint Tests")}
+        created: {$fromNow: ''}
+        deadline: {$fromNow: '1 hour'}
+        provisionerId: proj-misc
+        workerType: ci
+        payload:
+          maxRunTime: 1200
+          image: "standard8/one-off-system-add-ons:2017081801.a6a1f5c1d971"
+          command:
+          - "/bin/bash"
+          - "-lc"
+          - "git clone ${clone_url} repo && cd repo && git checkout ${head_rev} && npm install && npm run lint"
+        metadata:
+          name: One-off System Add-ons Lint Tests
+          description: One-off System Add-ons Lint Tests
+          owner: taskcluster-internal@mozilla.com
+          source: ${repository}
