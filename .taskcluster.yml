@@ -13,7 +13,7 @@ tasks:
 
     clone_url:
       $if: 'tasks_for == "github-pull-request"'
-      then: ${event.pull_request.head.repo.git_url}}
+      then: ${event.pull_request.head.repo.git_url}
       else: ${event.repository.url}
 
     repository:
