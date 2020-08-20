@@ -15,7 +15,7 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "5.16.0",
-    "eslint-plugin-json": "1.4.0",
+    "eslint-plugin-json": "2.1.2",
     "eslint-plugin-mozilla": "1.0.5",
     "eslint-plugin-no-unsanitized": "3.0.2",
     "eslint-plugin-promise": "4.1.1"
